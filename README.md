@@ -99,6 +99,6 @@ Avoid clicking unknown links or sharing passwords, payment details, or other sen
 
 ## Project Context
 
-Developed for **AMAVET**, as part of a student research project investigating the accuracy and limitations of rule-based SMS scam detection.
+Developed for **AMAVET - Festival vedy a techniky**, as part of a student research project investigating the accuracy and limitations of rule-based SMS scam detection.
 
 **Research question:** *How accurately can a rule-based algorithm distinguish between fraudulent and legitimate SMS messages?*
