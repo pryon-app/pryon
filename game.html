@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101127">
+  <script>
+  const saved = localStorage.getItem("pryon-theme");
+  const dark = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
+
+  document.documentElement.dataset.theme =
+    saved === "dark" || saved === "light"
+      ? saved
+      : dark ? "dark" : "light";
+</script>
+  <title>Spoznáš podvod? | PryOn</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="analysis.js" defer></script>
+  <script src="theme.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">&lt;P&gt;</div>
+
+        <div>
+          <h1>PryOn<span>.</span></h1>
+          <p>SMS ANALYZER</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button
+          id="themeToggle"
+          class="theme-toggle"
+          type="button"
+          aria-label="Prepnúť farebný režim"
+          aria-pressed="false"
+        >
+          <span id="themeIcon" aria-hidden="true">☾</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="game-main">
+<a href="index.html" class="back-link">← Späť na analyzátor</a>
+<section class="card quiz-card" aria-labelledby="quizHeading"><div class="section-heading"><div><h3 id="quizHeading">Spoznáš podvod?</h3><p>Odhadni typ ukážky a porovnaj svoj úsudok s PryOn.</p></div></div><ol id="quizTrack" class="quiz-track" aria-label="Priebeh kvízu"></ol><p id="quizProgress"></p><p id="quizMessage" class="quiz-message"></p><div class="buttons" role="group" aria-label="Tvoj odhad"><button type="button" class="button-secondary" data-guess="SCAM"><span aria-hidden="true">⚠</span> Podozrivá</button><button type="button" class="button-secondary" data-guess="LEGIT"><span aria-hidden="true">✓</span> Legitímna</button></div><div id="quizFeedback" class="quiz-feedback" role="status" aria-live="polite" aria-atomic="true"></div><div id="quizChallenge"></div><button id="quizNext" type="button" class="button-primary quiz-next" hidden>Ďalšia ukážka →</button><p class="match-help">Vymyslené ukážky so zamýšľaným typom. Výsledky hry nemerajú presnosť algoritmu a nezaručujú bezpečnosť skutočných SMS.</p></section>
+</main>
+
+
+    <footer>
+      <p>PryOn © 2026 · Študentský projekt</p>
+      <p>Vytvorené pre súťaž ako doplnok</p>
+    </footer>
+  </div>
+</body>
+
+</html>

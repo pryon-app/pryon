@@ -19,6 +19,8 @@
   <title>PryOn | Detektor podvodných SMS</title>
 
   <link rel="stylesheet" href="style.css">
+  <script src="analysis.js" defer></script>
+  <script src="theme.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -48,6 +50,7 @@
 
     <main>
       <section class="hero">
+        <div class="hero-copy">
         <span class="eyebrow">EXPERIMENTÁLNY KLASIFIKÁTOR</span>
 
         <h2>Je táto SMS <span>podvod?</span></h2>
@@ -55,6 +58,13 @@
           Vlož text správy a zisti, ako ju vyhodnotí pravidlový
           algoritmus&nbsp;PryOn
         </p>
+        </div>
+        <aside class="sms-preview" aria-label="Ukážka rozpoznania podozrivých výrazov">
+          <div class="preview-header"><span class="preview-avatar" aria-hidden="true">?</span><span>Neznámy odosielateľ<small>Ukážková správa</small></span><span class="preview-dot" aria-hidden="true"></span></div>
+          <p class="preview-message">Váš účet bude <mark>zablokovaný</mark>. <mark>Okamžite</mark> overte svoje údaje.</p>
+          <div class="preview-rule"><span>Hrozba + časový nátlak</span><strong>+2 body</strong></div>
+          <span class="preview-caption">Takto PryOn hľadá súvislosti.</span>
+        </aside>
       </section>
 
       <section class="card">
@@ -65,16 +75,28 @@
           </div>
         </div>
 
+        
+
+        <div class="example-picker" role="group" aria-label="Vyskúšať ukážkovú SMS">
+          <span class="example-picker-label">Vyskúšaj ukážku</span>
+          <div class="example-chips">
+            <button type="button" class="example-chip" data-example="parcel">📦 Zásielka</button>
+            <button type="button" class="example-chip" data-example="bank">🏦 Banka</button>
+            <button type="button" class="example-chip" data-example="prize">🎁 Výhra</button>
+          </div>
+        </div>
         <label for="smsInput">TEXT SPRÁVY</label>
 
         <textarea
           id="smsInput"
           placeholder="Sem napíš alebo vlož text SMS..."
           maxlength="2000"
+          aria-describedby="inputHelp errorMessage"
+          aria-keyshortcuts="Control+Enter Meta+Enter"
         ></textarea>
 
         <div class="textarea-footer">
-          <span>Správy sa nikam neodosielajú.</span>
+          <span id="inputHelp">Správy sa nikam neodosielajú.</span>
           <span id="charCount">0 / 2000</span>
         </div>
 
@@ -88,15 +110,17 @@
           </button>
         </div>
 
-        <p id="errorMessage" class="error" hidden>
+        <p id="errorMessage" class="error" role="alert" hidden>
           Najprv zadaj text SMS.
         </p>
       </section>
 
-      <section id="resultSection" class="card result-card" hidden>
+      <p id="resultStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+      <section id="resultSection" class="card result-card" tabindex="-1" aria-labelledby="resultHeading" hidden>
         <div class="section-heading">
           <div>
-            <h3>Výsledok analýzy</h3>
+            <span id="analysisNumber" class="evidence-number">ANALÝZA #01</span>
+            <h3 id="resultHeading">Výsledok analýzy</h3>
             <p>Takto správu vyhodnotil PryOn.</p>
           </div>
         </div>
@@ -108,12 +132,20 @@
             <p id="resultDescription"></p>
           </div>
 
-          <span id="resultIcon" class="result-icon">!</span>
+          <span id="resultIcon" class="result-icon" aria-hidden="true">!</span>
         </div>
 
         <div class="score-box">
-          <span>Celkové skóre</span>
+          <span>Celkové skóre<small class="score-threshold">Hranica podozrenia: 4 body</small></span>
           <strong id="scoreValue">0 bodov</strong>
+        </div>
+
+        <p class="score-help">Hranica pre podozrivú správu je 4 body. Skóre nie je pravdepodobnosť podvodu.</p>
+
+        <div class="details">
+          <h4>Rozpoznané výrazy v správe</h4>
+          <p id="matchedMessage" class="matched-message"></p>
+          <p class="match-help">Zvýraznené výrazy spustili pravidlá algoritmu. Samy osebe nepotvrdzujú podvod.</p>
         </div>
 
         <div class="details">
@@ -136,7 +168,8 @@
         </button>
       </section>
 
-      <section class="info-card">
+      <div class="game-entry"><a href="game.html" class="button-secondary game-link">Spoznáš podvod? Vyskúšaj hru →</a></div>
+<section class="info-card">
         <span class="info-icon">ⓘ</span>
 
         <div>
@@ -144,7 +177,7 @@
 
           <p>
             PryOn je experimentálny pravidlový algoritmus.
-            Výsledok LEGIT <strong>nezaručuje</strong>,
+            Nízke skóre <strong>nezaručuje</strong>,
             že je správa bezpečná.
             Pri podozrivých SMS <b>nikdy</b> neklikaj na neznáme odkazy
             a nezadávaj citlivé údaje.
@@ -152,11 +185,23 @@
         </div>
       </section>
     </main>
-</body>
 
+
+    <div class="footer-companion">
+<aside id="proony" class="proony" data-mood="curious" aria-label="Proony, sprievodca analýzou">
+          <button id="proonyToggle" class="proony-toggle" type="button" aria-label="Zobraziť alebo skryť Proonyho tip" aria-expanded="false" aria-controls="proonySpeech">
+            <span class="proony-character" aria-hidden="true"><span class="proony-eye proony-eye-left"></span><span class="proony-eye proony-eye-right"></span><span class="proony-badge">&lt;P&gt;</span></span>
+            <span class="proony-bubble" aria-hidden="true"><span></span><span></span><span></span></span>
+          </button>
+          <div id="proonySpeech" class="proony-speech" hidden><strong>Ahoj, som Proony!</strong><p id="proonyHint">Hľadám podozrivé znaky, ale nie každý podvod odhalím. Vlož SMS a preskúmame ju spolu.</p></div>
+        </aside>
+    </div>
     <footer>
       <p>PryOn © 2026 · Študentský projekt</p>
       <p>Vytvorené pre súťaž ako doplnok</p>
     </footer>
+  </div>
+
+</body>
 
 </html>
