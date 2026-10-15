@@ -10,7 +10,7 @@ function normalize(text) {
 const SCAM_WORDS = {
   odkaz: [
     "http://", "https://", "www.",
-    "bit.ly", "tinyurl", "t.co"
+    "bit.ly", "tinyurl", "t.co", ".cc"
   ],
 
   institucia: [
@@ -25,7 +25,7 @@ const SCAM_WORDS = {
     "heslo", "pin", "cislo karty",
     "udaje karty", "bankove udaje",
     "prihlasovacie udaje",
-    "osobne udaje", "overte identitu",
+    "osobne udaje", "overte identitu", "overte svoju" ,
     "potvrdte identitu"
   ],
 
@@ -46,7 +46,7 @@ const SCAM_WORDS = {
 
   zasielka: [
     "zasielka", "balik", "doruc",
-    "colne konanie"
+    "colne konanie" 
   ],
 
   vyhra: [
